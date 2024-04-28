@@ -1,0 +1,21 @@
+.container{
+    height: 100vh;
+    background: #8787fa;
+    display: grid;
+    grid-template-rows: 50px 1fr 100px;
+    grid-template-areas: "header"
+                         "body"
+                         "footer";
+    color: aliceblue;
+}
+
+.header{
+    grid-area: header;
+}
+.body{
+    grid-area: body;
+}
+
+.footer{
+    grid-area: footer;
+}
