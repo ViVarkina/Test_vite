@@ -1,11 +1,13 @@
-import {Rating} from "./components/rating/Rating.tsx";
+// import {Rating} from "./components/rating/Rating.tsx";
+import {TodoLists} from "./components";
 
 
 
 export const Body=()=>{
     return (
         <div>
-            <Rating/>
+            {/*<Rating/>*/}
+            <TodoLists/>
         </div>
     )
 }
