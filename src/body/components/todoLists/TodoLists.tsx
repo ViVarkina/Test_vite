@@ -1,20 +1,23 @@
 import {TodoList} from "./components";
 import {Task} from "./components/todoList/TodoList.tsx";
 import {useState} from "react";
+import {v4 as uuisv4} from "uuid";
 
-const tasks:Task[] = [
-    {id:1, task:"HTML",isDone:true},
-    {id:2, task:"Css",isDone:true},
-    {id:3, task:"React",isDone:false},
-    {id:4, task:"Redux",isDone:false},
-    {id:5, task:"ReduxToolKit",isDone:false},
-    {id:6, task:"Axios",isDone:false},
-    {id:7, task:"AntD",isDone:false},
+const initialTasks:Task[] = [
+    {id:uuisv4(), task:"HTML",isDone:true},
+    {id:uuisv4(), task:"Css",isDone:true},
+    {id:uuisv4(), task:"React",isDone:false},
+    {id:uuisv4(), task:"Redux",isDone:false},
+    {id:uuisv4(), task:"ReduxToolKit",isDone:false},
+    {id:uuisv4(), task:"Axios",isDone:false},
+    {id:uuisv4(), task:"AntD",isDone:false},
 ]
 
 export type FilterStateType="All"|"Active"|"Closed"
 export const TodoLists=()=>{
-    const [filterState, setFilterState]= useState<FilterStateType>("Closed")
+    const [tasks, setTasks]= useState<Task[]>(initialTasks)
+    console.log("tasks", tasks)
+    const [filterState, setFilterState]= useState<FilterStateType>("All")
 
     let filterTask: Task[] = []
     if(filterState === "All"){
@@ -29,6 +32,6 @@ export const TodoLists=()=>{
 
 
     return <>
-        <TodoList title={"Что учить"} tasks={filterTask} setFilterState={setFilterState} filterState={filterState}/>
+        <TodoList title={"Что учить"} tasks={filterTask} setFilterState={setFilterState} filterState={filterState} setTasks={setTasks}/>
     </>
 }
