@@ -35,6 +35,9 @@ export const TodoList=({title,tasks, setFilterState,filterState,setTasks}:Props)
         <div>{title}</div>
         <div>
             <input className={error ? css.error :undefined} type={"text"} value={value} onChange={(e)=>{
+                if (error) {
+                    setError(false)
+                }
                 setvalue(e.currentTarget.value)
                 console.log(e.currentTarget.value)
             }}/>
