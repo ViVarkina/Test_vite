@@ -16,9 +16,7 @@ const initialTasks:Task[] = [
 export type FilterStateType="All"|"Active"|"Closed"
 export const TodoLists=()=>{
     const [tasks, setTasks]= useState<Task[]>(initialTasks)
-    console.log("tasks", tasks)
     const [filterState, setFilterState]= useState<FilterStateType>("All")
-
     let filterTask: Task[] = []
     if(filterState === "All"){
         filterTask= tasks
@@ -27,10 +25,6 @@ export const TodoLists=()=>{
     }else if(filterState === "Closed"){
         filterTask=tasks.filter(task => task.isDone)
     }
-
-
-
-
     return <>
         <TodoList title={"Что учить"} tasks={filterTask} setFilterState={setFilterState} filterState={filterState} setTasks={setTasks}/>
     </>
