@@ -1,29 +1,43 @@
-import {FilterStateType} from "../../TodoLists.tsx";
-// import {v4 as uuisv4} from "uuid";
-// import {ChangeEvent, useState} from "react";
-// import css from "./TodoList.module.css"
 import {FilterBlock} from "../fiterBlock/FilterBlock.tsx";
 import {TasksList} from "../tasksList/TasksList.tsx";
 import {AddTask} from "../addTask/AddTask.tsx";
-interface Props{
+import {Dispatch, SetStateAction, useState} from "react";
+import {TaskType} from "../../TodoLists.tsx";
+
+interface PropsType {
     title: string
-    tasks:Task[]
-    setFilterState:(filterState:FilterStateType)=>void
-    filterState: FilterStateType
-    setTasks:(tasks:Task[])=>void
+    tasks: Task[]
+    setTasks: Dispatch<SetStateAction<TaskType>>
+    todolistId: string
 }
-export interface Task{
+
+export interface Task {
     id: string
     task: string
     isDone: boolean
+    todolistId: string
 }
 
+export type FilterStateType = "All" | "Active" | "Closed"
+export const TodoList = ({title, tasks, setTasks, todolistId}: PropsType) => {
 
-export const TodoList=({title,tasks, setFilterState,filterState,setTasks}:Props)=>{
+
+    const [filterState, setFilterState] = useState<FilterStateType>("All")
+    let filterTask: Task[] = []
+
+    if (filterState === "All") {
+        filterTask = tasks
+    } else if (filterState === "Active") {
+        filterTask = tasks.filter(task => !task.isDone)
+    } else if (filterState === "Closed") {
+        filterTask = tasks.filter(task => task.isDone)
+    }
+
+
     return <>
         <div>{title}</div>
-        <AddTask tasks={tasks} setTasks={setTasks}/>
-        <TasksList tasks={tasks} setTasks={setTasks}/>
-    <FilterBlock setFilterState={setFilterState} filterState={filterState}/>
+        <AddTask setTasks={setTasks} todolistId={todolistId}/>
+        <TasksList setTasks={setTasks} filterTask={filterTask} todolistId={todolistId}/>
+        <FilterBlock setFilterState={setFilterState} filterState={filterState}/>
     </>
 }

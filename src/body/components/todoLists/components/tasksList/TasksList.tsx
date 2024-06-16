@@ -1,29 +1,41 @@
 import css from "../todoList/TodoList.module.css";
 import {Task} from "../todoList/TodoList.tsx";
-import {ChangeEvent} from "react";
+import {ChangeEvent, Dispatch, SetStateAction} from "react";
+import {TaskType} from "../../TodoLists.tsx";
 
-interface Prors{
-    tasks:Task[]
-    setTasks:(tasks:Task[])=>void
+interface PropsType {
+    filterTask: Task[]
+    setTasks: Dispatch<SetStateAction<TaskType>>
+    todolistId: string
 }
 
-export const TasksList=({tasks, setTasks}:Prors)=> {
-    const onDeleteTask=(id: string)=>{
-        const newArr = [...tasks]
-        const filterTask = newArr.filter(task => task.id !== id)
-        setTasks(filterTask)
+export const TasksList = ({setTasks, filterTask, todolistId}: PropsType) => {
+    const onDeleteTask = (id: string) => {
+
+        setTasks((prevState) => {
+            const targetTodolist = prevState[todolistId]
+
+            const filterTask = targetTodolist.filter((el) => el.id !== id)
+            // console.log(filterTask)
+
+            // console.log({...prevState, ...{[todolistId]: filterTask}})
+            return {...prevState, ...{[todolistId]: filterTask}}
+
+        })
     }
-    const onChangeCheckBox =(el:ChangeEvent<HTMLInputElement>, id:string)=>{
-        const newArr = [...tasks]
-        const changeTask = newArr.find(task=>task.id == id)
-        if (changeTask){
-            changeTask.isDone = el.target.checked
-            const newTasks = newArr.map(task=> task.id ==id ? changeTask:task)
-            setTasks(newTasks)
-        }
+    const onChangeCheckBox = (el: ChangeEvent<HTMLInputElement>, id: string) => {
+        setTasks(prevState => {
+            const tasks = prevState[todolistId]
+            const resultTasks = tasks.map((task) => task.id === id ? {...task, isDone: el.target.checked} : task)
+            const resultObj = {
+                [todolistId]: resultTasks
+            }
+
+            return {...prevState, ...resultObj}
+        })
     }
     return <ul className={css.tasks}>
-        {tasks.map((task) => (
+        {filterTask.map((task) => (
             <li key={task.id} className={task.isDone ? css.isDone : undefined}>
                 <input type={"checkbox"} checked={task.isDone}
                        onChange={event => onChangeCheckBox(event, task.id)}/>{task.task}
