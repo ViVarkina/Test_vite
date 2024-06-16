@@ -1,12 +1,13 @@
 import {Task, TodoList} from "./components/todoList/TodoList.tsx";
 import {v4 as uuisv4} from "uuid";
 import {useState} from "react";
+import {AddTodoList} from "./components";
 
 export interface TaskType {
     [key: string]: Task[]
 }
 
-interface TodoListsType {
+export interface TodoListsType {
     id: string
     title: string
 }
@@ -15,8 +16,8 @@ const todolistId1 = uuisv4()
 const todolistId2 = uuisv4()
 
 const initialTodolists: TodoListsType[] = [
-    {id: todolistId1, title: "лист1"},
-    {id: todolistId2, title: "лист2"},
+    // {id: todolistId1, title: "лист1"},
+    // {id: todolistId2, title: "лист2"},
 ]
 
 
@@ -38,9 +39,9 @@ const initialTasks: TaskType = {
 export const TodoLists = () => {
     const [todoLists, setTodolists] = useState<TodoListsType[]>(initialTodolists)
     const [tasks, setTasks] = useState<TaskType>(initialTasks)
-    console.log(setTodolists)
 
     return <>
+        <AddTodoList setTodoLists={setTodolists} setTasks={setTasks}/>
         {todoLists.map((todolist) => {
             return (
                 <TodoList
