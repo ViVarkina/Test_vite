@@ -1,23 +1,28 @@
 import css from "../todoList/TodoList.module.css";
-import {useState} from "react";
+import {Dispatch, SetStateAction, useState} from "react";
 import {v4 as uuisv4} from "uuid";
 import {Task} from "../todoList/TodoList.tsx";
+import {TaskType} from "../../TodoLists.tsx";
 
-interface Prors{
-    tasks:Task[]
-    setTasks:(tasks:Task[])=>void
+interface ProrsType {
+    setTasks: Dispatch<SetStateAction<TaskType>>
+    todolistId: string
 }
 
-export const AddTask=({tasks, setTasks}:Prors)=> {
-    const[value,setvalue]=useState<string>("")
-    const [error, setError]=useState<boolean>()
-    const addTask = ()=>{
-        if (value){
-            const newArrTasks =[...tasks]
-            newArrTasks.unshift({id:uuisv4(), task:value, isDone:false})
-            setTasks(newArrTasks)
-            setvalue("")
-        } else{
+export const AddTask = ({setTasks, todolistId}: ProrsType) => {
+    const [value, setValue] = useState<string>("")
+    const [error, setError] = useState<boolean>()
+    const addTask = () => {
+        if (value) {
+            setTasks(prevState => {
+                const newTask: Task = {id: uuisv4(), task: value, isDone: false, todolistId}
+                console.log(newTask)
+                const tasks = prevState[todolistId]
+                const newTasks = [newTask, ...tasks]
+                return {...prevState, ...{[todolistId]: newTasks}}
+            })
+            setValue("")
+        } else {
             setError(true)
         }
     }
@@ -26,7 +31,7 @@ export const AddTask=({tasks, setTasks}:Prors)=> {
             if (error) {
                 setError(false)
             }
-            setvalue(e.currentTarget.value)
+            setValue(e.currentTarget.value)
             console.log(e.currentTarget.value)
         }}/>
         <button onClick={addTask}>Add task</button>

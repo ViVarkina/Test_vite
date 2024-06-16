@@ -1,41 +1,38 @@
 import css from "../todoList/TodoList.module.css";
 import {Task} from "../todoList/TodoList.tsx";
-import {ChangeEvent} from "react";
-import {TaskObjType} from "../../TodoLists.tsx";
+import {ChangeEvent, Dispatch, SetStateAction} from "react";
+import {TaskType} from "../../TodoLists.tsx";
 
-interface Props{
-    tasks:Task[]
+interface PropsType {
     filterTask: Task[]
-    setTasks:(tasks:TaskObjType)=>void
+    setTasks: Dispatch<SetStateAction<TaskType>>
+    todolistId: string
 }
 
-export const TasksList=({tasks, setTasks, filterTask}:Props)=> {
-    const onDeleteTask=(id: string)=>{
-        const newArr = [...tasks]
-        const deleteTask = newArr.find(task => task.id == id)
-        console.log(deleteTask, newArr)
-        if (deleteTask) {
-            console.log("123")
-            setTasks((prevState) => {
-                const tagretTtodolist = prevState[deleteTask.todolistId]
-                console.log(tagretTtodolist)
+export const TasksList = ({setTasks, filterTask, todolistId}: PropsType) => {
+    const onDeleteTask = (id: string) => {
 
-                const filterTask = tagretTtodolist.filter((el) => el.id !== id)
-                console.log(filterTask)
+        setTasks((prevState) => {
+            const targetTodolist = prevState[todolistId]
 
-                console.log({...prevState, ...{[deleteTask.todolistId]: filterTask}})
-                return {...prevState, ...{[deleteTask.todolistId]: filterTask}}
+            const filterTask = targetTodolist.filter((el) => el.id !== id)
+            // console.log(filterTask)
 
-            })
-        }}
-    const onChangeCheckBox =(el:ChangeEvent<HTMLInputElement>, id:string)=>{
-        const newArr = [...tasks]
-        const changeTask = newArr.find(task=>task.id == id)
-        if (changeTask){
-            changeTask.isDone = el.target.checked
-            const newTasks = newArr.map(task=> task.id ==id ? changeTask:task)
-            // setTasks()
-        }
+            // console.log({...prevState, ...{[todolistId]: filterTask}})
+            return {...prevState, ...{[todolistId]: filterTask}}
+
+        })
+    }
+    const onChangeCheckBox = (el: ChangeEvent<HTMLInputElement>, id: string) => {
+        setTasks(prevState => {
+            const tasks = prevState[todolistId]
+            const resultTasks = tasks.map((task) => task.id === id ? {...task, isDone: el.target.checked} : task)
+            const resultObj = {
+                [todolistId]: resultTasks
+            }
+
+            return {...prevState, ...resultObj}
+        })
     }
     return <ul className={css.tasks}>
         {filterTask.map((task) => (
