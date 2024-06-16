@@ -50,6 +50,7 @@ export const TodoLists = () => {
                     tasks={tasks[todolist.id]}
                     setTasks={setTasks}
                     todolistId={todolist.id}
+                    setTodolists={setTodolists}
                 />
             )
         })}
