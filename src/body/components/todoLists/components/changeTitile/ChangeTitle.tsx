@@ -1,24 +1,21 @@
-import {Dispatch, SetStateAction, useState} from "react";
-import {TodoListsType} from "../../TodoLists.tsx";
+import {useState} from "react";
+
 
 interface PropsType {
-    title: string
-    todolistId: string
-    setTodolists: Dispatch<SetStateAction<TodoListsType[]>>
+    title: string,
+    saveTitle: (value: string, callBack: () => void) => void
 }
 
-export const ChangeTitle = ({title, todolistId, setTodolists}: PropsType) => {
+export const ChangeTitle = ({title, saveTitle}: PropsType) => {
     const [titleIsVisible, setTitleIsVisible] = useState<boolean>(true)
     const [value, setValue] = useState<string>(title)
 
-    const onSaveTitle = () => {
-        setTodolists(prevState => {
-            const newArr = prevState.map((tdl) => tdl.id === todolistId ? {...tdl, title: value} : tdl)
-            return newArr
-        })
+    const onCloseInput = () => {
         setTitleIsVisible(true)
     }
-
+    const onSave = () => {
+        saveTitle(value, onCloseInput)
+    }
 
     return <div>
         {titleIsVisible ? (
@@ -39,7 +36,7 @@ export const ChangeTitle = ({title, todolistId, setTodolists}: PropsType) => {
                     setValue(title)
                 }}>cansel
                 </button>
-                <button onClick={onSaveTitle}>save</button>
+                <button onClick={onSave}>save</button>
             </div>
         )}
     </div>
