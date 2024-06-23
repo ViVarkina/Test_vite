@@ -3,6 +3,7 @@ import {Task} from "../todoList/TodoList.tsx";
 import {ChangeEvent, Dispatch, SetStateAction} from "react";
 import {TaskType} from "../../TodoLists.tsx";
 import {ChangeTitle} from "../changeTitile/ChangeTitle.tsx";
+import {BaseButton} from "../../../../../shared";
 
 interface PropsType {
     filterTask: Task[]
@@ -47,14 +48,17 @@ export const TasksList = ({setTasks, filterTask, todolistId}: PropsType) => {
     return <ul className={css.tasks}>
         {filterTask.map((task) => (
             <li key={task.id} className={task.isDone ? css.isDone : undefined}>
-                <input type={"checkbox"} checked={task.isDone}
-                       onChange={event => onChangeCheckBox(event, task.id)}/>
-                <ChangeTitle title={task.task} saveTitle={(value: string, successCallback: () => void) => {
-                    onSaveTitleTask(task.id, value, successCallback)
-                }}/>
-                <button>изменить</button>
-                <button onClick={() => onDeleteTask(task.id)}>удалить</button>
+                <div className={css.container}>
+                    <input type={"checkbox"} checked={task.isDone}
+                           onChange={event => onChangeCheckBox(event, task.id)}/>
+
+                    <ChangeTitle title={task.task} saveTitle={(value: string, successCallback: () => void) => {
+                        onSaveTitleTask(task.id, value, successCallback)
+                    }}/>
+                    <BaseButton onClick={() => onDeleteTask(task.id)}>удалить</BaseButton>
+                </div>
             </li>
+
 
         ))}
     </ul>

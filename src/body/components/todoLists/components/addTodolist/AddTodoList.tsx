@@ -1,6 +1,7 @@
 import {Dispatch, SetStateAction, useState} from "react";
 import {v4 as uuisv4} from "uuid";
 import {TaskType, TodoListsType} from "../../TodoLists.tsx";
+import { BaseButton} from "../../../../../shared";
 
 
 interface PropsType {
@@ -32,7 +33,7 @@ export const AddTodoList=({setTodoLists,setTasks}:PropsType)=>{
                 setValue(event.target.value)
             }}
                    value={value}/>
-            <button onClick={onClickAddTodolist}>+</button>
+            <BaseButton onClick={onClickAddTodolist}>+</BaseButton>
         </div>
     </>
 }

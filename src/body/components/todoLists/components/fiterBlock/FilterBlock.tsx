@@ -1,7 +1,8 @@
 import {FilterStateType} from "../todoList/TodoList.tsx";
+import {BaseButton} from "../../../../../shared";
 
 const setColor = (filterState: FilterStateType, state: FilterStateType) => {
-    return {background: filterState === state ? "lightblue" : ""}
+    return filterState===state
 }
 
 interface Props {
@@ -9,12 +10,17 @@ interface Props {
     filterState: FilterStateType
 }
 
+const listButton:FilterStateType[]=["All","Active","Closed"]
+
 export const FilterBlock = (props: Props) => {
     const {filterState, setFilterState} = props
     return <div>
-        <button style={setColor(filterState, "All")} onClick={() => setFilterState("All")}>ALL</button>
-        <button style={setColor(filterState, "Active")} onClick={() => setFilterState("Active")}>Active</button>
-        <button style={setColor(filterState, "Closed")} onClick={() => setFilterState("Closed")}>Closed</button>
+        {listButton.map(btn=>(
+            <BaseButton
+                variant={setColor(filterState, btn)?"outline" :"primary"}
+                onClick={() => setFilterState(btn)}>{btn}
+            </BaseButton>
+        ))}
     </div>
 }
 

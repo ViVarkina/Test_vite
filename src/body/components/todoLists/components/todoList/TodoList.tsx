@@ -4,6 +4,7 @@ import {AddTask} from "../addTask/AddTask.tsx";
 import {Dispatch, SetStateAction, useState} from "react";
 import {TaskType, TodoListsType} from "../../TodoLists.tsx";
 import {ChangeTitle} from "../changeTitile/ChangeTitle.tsx";
+import css from "./TodoList.module.css"
 
 interface PropsType {
     title: string
@@ -45,9 +46,12 @@ export const TodoList = ({title, tasks, setTasks, todolistId, setTodolists}: Pro
     }
 
     return <>
-        <ChangeTitle title={title} saveTitle={onSaveTitleTdl}/>
-        <AddTask setTasks={setTasks} todolistId={todolistId}/>
-        <TasksList setTasks={setTasks} filterTask={filterTask} todolistId={todolistId}/>
-        <FilterBlock setFilterState={setFilterState} filterState={filterState}/>
+        <div className={css.container}>
+            <ChangeTitle title={title} saveTitle={onSaveTitleTdl}/>
+            <AddTask setTasks={setTasks} todolistId={todolistId}/>
+            <TasksList setTasks={setTasks} filterTask={filterTask} todolistId={todolistId}/>
+            <FilterBlock setFilterState={setFilterState} filterState={filterState}/>
+        </div>
+
     </>
 }

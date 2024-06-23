@@ -3,6 +3,7 @@ import {Dispatch, SetStateAction, useState} from "react";
 import {v4 as uuisv4} from "uuid";
 import {Task} from "../todoList/TodoList.tsx";
 import {TaskType} from "../../TodoLists.tsx";
+import {BaseButton} from "../../../../../shared";
 
 interface ProrsType {
     setTasks: Dispatch<SetStateAction<TaskType>>
@@ -34,6 +35,6 @@ export const AddTask = ({setTasks, todolistId}: ProrsType) => {
             setValue(e.currentTarget.value)
             console.log(e.currentTarget.value)
         }}/>
-        <button onClick={addTask}>Add task</button>
+        <BaseButton onClick={addTask}>Add task</BaseButton>
     </div>
 }
