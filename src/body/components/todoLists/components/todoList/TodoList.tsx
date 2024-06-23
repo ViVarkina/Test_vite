@@ -36,9 +36,16 @@ export const TodoList = ({title, tasks, setTasks, todolistId, setTodolists}: Pro
         filterTask = tasks.filter(task => task.isDone)
     }
 
+    const onSaveTitleTdl = (value: string, onSuccesCallback: () => void) => {
+        setTodolists(prevState => {
+            const newArr = prevState.map((tdl) => tdl.id === todolistId ? {...tdl, title: value} : tdl)
+            return newArr
+        })
+        onSuccesCallback()
+    }
 
     return <>
-        <ChangeTitle title={title} todolistId={todolistId} setTodolists={setTodolists}/>
+        <ChangeTitle title={title} saveTitle={onSaveTitleTdl}/>
         <AddTask setTasks={setTasks} todolistId={todolistId}/>
         <TasksList setTasks={setTasks} filterTask={filterTask} todolistId={todolistId}/>
         <FilterBlock setFilterState={setFilterState} filterState={filterState}/>
