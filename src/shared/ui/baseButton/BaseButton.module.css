@@ -1,0 +1,28 @@
+.button {
+  padding: 2px 5px;
+  border-radius: 4px;
+  border-color: transparent;
+  color: var(--blue-black);
+  &:hover {
+    opacity: 0.8;
+  }
+  margin: 2px 3px;
+}
+
+.primary {
+  background: var(--primary-color);
+}
+
+.secondary {
+  background: var(--secondary-color);
+}
+
+.outline {
+  background: var(--white);
+  border-color: var(--primary-color);
+}
+
+.button:disabled {
+  background-color: var(--grey_two);
+  color: var(--grey);
+}
