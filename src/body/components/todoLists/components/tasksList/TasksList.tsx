@@ -1,9 +1,9 @@
-import css from '../todoList/TodoList.module.css';
+import css from '../tasksList/TaskList.module.css';
 import { Task } from '../todoList/TodoList.tsx';
 import { ChangeEvent, Dispatch, SetStateAction } from 'react';
 import { TaskType } from '../../TodoLists.tsx';
 import { ChangeTitle } from '../changeTitile/ChangeTitle.tsx';
-import { BaseButton } from '../../../../../shared';
+import { BaseButton, BaseCheckbox } from '../../../../../shared';
 
 interface PropsType {
   filterTask: Task[];
@@ -17,9 +17,7 @@ export const TasksList = ({ setTasks, filterTask, todolistId }: PropsType) => {
       const targetTodolist = prevState[todolistId];
 
       const filterTask = targetTodolist.filter((el) => el.id !== id);
-      // console.log(filterTask)
 
-      // console.log({...prevState, ...{[todolistId]: filterTask}})
       return { ...prevState, ...{ [todolistId]: filterTask } };
     });
   };
@@ -50,8 +48,7 @@ export const TasksList = ({ setTasks, filterTask, todolistId }: PropsType) => {
       {filterTask.map((task) => (
         <li key={task.id} className={task.isDone ? css.isDone : undefined}>
           <div className={css.container}>
-            <input
-              type={'checkbox'}
+            <BaseCheckbox
               checked={task.isDone}
               onChange={(event) => onChangeCheckBox(event, task.id)}
             />
@@ -61,8 +58,11 @@ export const TasksList = ({ setTasks, filterTask, todolistId }: PropsType) => {
               saveTitle={(value: string, successCallback: () => void) => {
                 onSaveTitleTask(task.id, value, successCallback);
               }}
+              disabled={task.isDone}
             />
-            <BaseButton onClick={() => onDeleteTask(task.id)}>удалить</BaseButton>
+            <BaseButton onClick={() => onDeleteTask(task.id)} disabled={task.isDone}>
+              удалить
+            </BaseButton>
           </div>
         </li>
       ))}

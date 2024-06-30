@@ -1,6 +1,8 @@
 .container {
   display: flex;
-  gap: 10px;
+  gap: 30px;
+  justify-content: space-between;
+  border: 1px solid red;
 }
 
 .title {

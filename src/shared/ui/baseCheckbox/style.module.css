@@ -1,0 +1,44 @@
+.container {
+  position: relative;
+
+  padding-left: 22px;
+  cursor: pointer;
+}
+
+.checkBox {
+  position: absolute;
+  opacity: 0;
+  height: 0;
+  width: 0;
+}
+
+.checkMark {
+  left: 0;
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border-bottom-left-radius: 2px;
+  border-top-right-radius: 2px;
+  border: 1px solid #c7c7f3;
+}
+
+.checkBox:checked ~ .checkMark {
+  background: #c7c7f3;
+}
+
+.checkMark:after {
+  content: '';
+  position: absolute;
+  display: none;
+  left: 5px;
+  top: 0;
+  width: 4px;
+  height: 10px;
+  border: solid #3a4980;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.checkBox:checked ~ .checkMark:after {
+  display: block;
+}

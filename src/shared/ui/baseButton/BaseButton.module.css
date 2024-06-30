@@ -21,3 +21,8 @@
   background: var(--white);
   border-color: var(--primary-color);
 }
+
+.button:disabled {
+  background-color: var(--grey_two);
+  color: var(--grey);
+}

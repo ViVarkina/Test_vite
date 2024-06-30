@@ -17,8 +17,8 @@ const todolistId1 = uuisv4();
 const todolistId2 = uuisv4();
 
 const initialTodolists: TodoListsType[] = [
-  { id: todolistId1, title: 'лист1' },
-  { id: todolistId2, title: 'лист2' },
+  { id: todolistId1, title: 'Sheet 1' },
+  { id: todolistId2, title: 'Sheet 2' },
 ];
 
 const initialTasks: TaskType = {
@@ -41,8 +41,8 @@ export const TodoLists = () => {
 
   return (
     <>
+      <AddTodoList setTodoLists={setTodolists} setTasks={setTasks} />
       <div className={css.container}>
-        <AddTodoList setTodoLists={setTodolists} setTasks={setTasks} />
         {todoLists.map((todolist) => {
           return (
             <TodoList
