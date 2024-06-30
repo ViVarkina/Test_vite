@@ -1,12 +1,10 @@
-.container{
-    display: flex;
-    gap: 10px;
+.container {
+  display: flex;
+  gap: 10px;
 }
 
-
-.title{
-    width: 120px;
-    overflow-x: hidden;
-    text-overflow:ellipsis;
-
+.title {
+  width: 120px;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
 }

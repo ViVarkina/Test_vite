@@ -1,13 +1,11 @@
 // import {Rating} from "./components/rating/Rating.tsx";
-import {TodoLists} from "./components";
+import { TodoLists } from './components';
 
-
-
-export const Body=()=>{
-    return (
-        <div>
-            {/*<Rating/>*/}
-            <TodoLists/>
-        </div>
-    )
-}
+export const Body = () => {
+  return (
+    <div>
+      {/*<Rating/>*/}
+      <TodoLists />
+    </div>
+  );
+};
