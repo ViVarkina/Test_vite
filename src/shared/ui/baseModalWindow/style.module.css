@@ -1,0 +1,46 @@
+.overlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: var(--grey_two-30);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.container {
+    color: var(--grey_two);
+    min-height: 100px;
+    min-width: 500px;
+    background-color: var(--white);
+    border-radius: 10px;
+    padding: 16px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 15px;
+}
+
+
+.close {
+    position: absolute;
+    right: 16px;
+    top: 16px;
+    cursor: pointer;
+}
+
+
+.body {
+
+}
+
+.btnContainer {
+    display: flex;
+    gap: 16px;
+}

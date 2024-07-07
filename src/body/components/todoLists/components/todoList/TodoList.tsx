@@ -5,6 +5,7 @@ import { Dispatch, SetStateAction, useState } from 'react';
 import { TaskType, TodoListsType } from '../../TodoLists.tsx';
 import { ChangeTitle } from '../changeTitile/ChangeTitle.tsx';
 import css from './TodoList.module.css';
+import { DeleteTodolist } from '../deletTodolist/DeleteTodolist.tsx';
 
 interface PropsType {
   title: string;
@@ -48,6 +49,7 @@ export const TodoList = ({ title, tasks, setTasks, todolistId, setTodolists }: P
     <>
       <div className={css.container}>
         <ChangeTitle title={title} saveTitle={onSaveTitleTdl} />
+        <DeleteTodolist setTasks={setTasks} todolistId={todolistId} setTodolists={setTodolists} />
         <AddTask setTasks={setTasks} todolistId={todolistId} />
         <TasksList setTasks={setTasks} filterTask={filterTask} todolistId={todolistId} />
         <FilterBlock setFilterState={setFilterState} filterState={filterState} />

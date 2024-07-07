@@ -1,22 +1,23 @@
 .container {
-  /*height: 100vh;*/
-  background: #bdc8f3;
-  display: grid;
-  grid-template-rows: 50px 1fr 100px;
-  grid-template-areas:
+    height: 100vh;
+    background: #bdc8f3;
+    display: grid;
+    grid-template-rows: 50px 1fr 100px;
+    grid-template-areas:
     'header'
     'body'
     'footer';
-  color: aliceblue;
+    color: aliceblue;
 }
 
 .header {
-  grid-area: header;
+    grid-area: header;
 }
+
 .body {
-  grid-area: body;
+    grid-area: body;
 }
 
 .footer {
-  grid-area: footer;
+    grid-area: footer;
 }
