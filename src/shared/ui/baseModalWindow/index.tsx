@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import css from './style.module.css';
-import { BaseButton } from '../baseButton/BaseButton.tsx';
+import { BaseButton } from '@/shared';
 import { Portal } from '../../hoc';
 
 interface PropsType {
