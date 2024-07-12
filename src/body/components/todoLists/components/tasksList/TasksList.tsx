@@ -3,7 +3,7 @@ import { Task } from '../todoList/TodoList.tsx';
 import { ChangeEvent, Dispatch, SetStateAction } from 'react';
 import { TaskType } from '../../TodoLists.tsx';
 import { ChangeTitle } from '../changeTitile/ChangeTitle.tsx';
-import { BaseCheckbox } from '../../../../../shared';
+import { BaseCheckbox } from '@/shared';
 import { DeleteTask } from './components';
 
 interface PropsType {

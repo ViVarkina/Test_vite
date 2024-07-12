@@ -1,5 +1,5 @@
 import { FilterStateType } from '../todoList/TodoList.tsx';
-import { BaseButton } from '../../../../../shared';
+import { BaseButton } from '@/shared';
 
 const setColor = (filterState: FilterStateType, state: FilterStateType) => {
   return filterState === state;

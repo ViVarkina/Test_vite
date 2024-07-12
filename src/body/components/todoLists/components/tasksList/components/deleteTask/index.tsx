@@ -1,4 +1,4 @@
-import { BaseButton, BaseModalWindow, useModal } from '../../../../../../../shared';
+import { BaseButton, BaseModalWindow, useModal } from '@/shared';
 
 interface PropsType {
   disabled: boolean;
