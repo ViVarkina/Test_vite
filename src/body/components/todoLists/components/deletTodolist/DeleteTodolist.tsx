@@ -1,6 +1,6 @@
-import { BaseButton, BaseModalWindow } from '../../../../../shared';
+import { BaseButton, BaseModalWindow, useModal } from '../../../../../shared';
 import { TaskType, TodoListsType } from '../../TodoLists.tsx';
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 
 interface PropsType {
   setTasks: Dispatch<SetStateAction<TaskType>>;
@@ -9,7 +9,8 @@ interface PropsType {
 }
 
 export const DeleteTodolist = ({ setTasks, todolistId, setTodolists }: PropsType) => {
-  const [isOpen, setOpen] = useState<boolean>(false);
+  const { isOpen, openModal, closeOpen } = useModal();
+
   const onDeleteTodolist = () => {
     setTasks((prevState) => {
       const newObjTask: TaskType = { ...prevState };
@@ -23,9 +24,9 @@ export const DeleteTodolist = ({ setTasks, todolistId, setTodolists }: PropsType
 
   return (
     <>
-      <BaseButton onClick={() => setOpen(true)}>Delete</BaseButton>
+      <BaseButton onClick={openModal}>Delete</BaseButton>
       {isOpen && (
-        <BaseModalWindow onCansel={() => setOpen(false)} onOk={onDeleteTodolist}>
+        <BaseModalWindow isOpen={true} onCansel={closeOpen} onOk={onDeleteTodolist}>
           <div>Вы хотите удалить?</div>
         </BaseModalWindow>
       )}

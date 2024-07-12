@@ -3,7 +3,8 @@ import { Task } from '../todoList/TodoList.tsx';
 import { ChangeEvent, Dispatch, SetStateAction } from 'react';
 import { TaskType } from '../../TodoLists.tsx';
 import { ChangeTitle } from '../changeTitile/ChangeTitle.tsx';
-import { BaseButton, BaseCheckbox } from '../../../../../shared';
+import { BaseCheckbox } from '../../../../../shared';
+import { DeleteTask } from './components';
 
 interface PropsType {
   filterTask: Task[];
@@ -60,9 +61,7 @@ export const TasksList = ({ setTasks, filterTask, todolistId }: PropsType) => {
               }}
               disabled={task.isDone}
             />
-            <BaseButton onClick={() => onDeleteTask(task.id)} disabled={task.isDone}>
-              удалить
-            </BaseButton>
+            <DeleteTask disabled={task.isDone} onClick={() => onDeleteTask(task.id)} />
           </div>
         </li>
       ))}
