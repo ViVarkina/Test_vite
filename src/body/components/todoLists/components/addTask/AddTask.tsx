@@ -1,17 +1,19 @@
 import css from '../todoList/TodoList.module.css';
-import { Dispatch, SetStateAction, useState } from 'react';
+import { useContext, useState } from 'react';
 import { v4 as uuisv4 } from 'uuid';
 import { BaseButton, BaseInput } from '@/shared';
-import { Task, TaskType } from '@/type';
+import { Task } from '@/type';
+import { TodolistContext } from '@/App/provioder';
 
 interface ProrsType {
-  setTasks: Dispatch<SetStateAction<TaskType>>;
   todolistId: string;
 }
 
-export const AddTask = ({ setTasks, todolistId }: ProrsType) => {
+export const AddTask = ({ todolistId }: ProrsType) => {
   const [value, setValue] = useState<string>('');
   const [error, setError] = useState<boolean>();
+  const { setTasksObj: setTasks } = useContext(TodolistContext);
+
   const addTask = () => {
     if (value) {
       setTasks((prevState) => {
