@@ -1,30 +1,23 @@
 import { FilterBlock } from '../fiterBlock/FilterBlock.tsx';
 import { TasksList } from '../tasksList/TasksList.tsx';
 import { AddTask } from '../addTask/AddTask.tsx';
-import { Dispatch, SetStateAction, useState } from 'react';
-import { TaskType, TodoListsType } from '../../TodoLists.tsx';
+import { useContext, useState } from 'react';
 import { ChangeTitle } from '../changeTitile/ChangeTitle.tsx';
 import css from './TodoList.module.css';
 import { DeleteTodolist } from '../deletTodolist/DeleteTodolist.tsx';
+import { Task } from '@/type/todolistType.ts';
+import { TodolistContext } from '@/App/provioder';
 
 interface PropsType {
   title: string;
-  tasks: Task[];
-  setTasks: Dispatch<SetStateAction<TaskType>>;
-  todolistId: string;
-  setTodolists: Dispatch<SetStateAction<TodoListsType[]>>;
-}
-
-export interface Task {
-  id: string;
-  task: string;
-  isDone: boolean;
   todolistId: string;
 }
 
 export type FilterStateType = 'All' | 'Active' | 'Closed';
-export const TodoList = ({ title, tasks, setTasks, todolistId, setTodolists }: PropsType) => {
+export const TodoList = ({ title, todolistId }: PropsType) => {
   const [filterState, setFilterState] = useState<FilterStateType>('All');
+  const { setTodolists, tasksObj } = useContext(TodolistContext);
+  const tasks = tasksObj[todolistId];
   let filterTask: Task[] = [];
 
   if (filterState === 'All') {
@@ -49,9 +42,9 @@ export const TodoList = ({ title, tasks, setTasks, todolistId, setTodolists }: P
     <>
       <div className={css.container}>
         <ChangeTitle title={title} saveTitle={onSaveTitleTdl} />
-        <DeleteTodolist setTasks={setTasks} todolistId={todolistId} setTodolists={setTodolists} />
-        <AddTask setTasks={setTasks} todolistId={todolistId} />
-        <TasksList setTasks={setTasks} filterTask={filterTask} todolistId={todolistId} />
+        <DeleteTodolist todolistId={todolistId} />
+        <AddTask todolistId={todolistId} />
+        <TasksList filterTask={filterTask} todolistId={todolistId} />
         <FilterBlock setFilterState={setFilterState} filterState={filterState} />
       </div>
     </>

@@ -1,6 +1,6 @@
-import { Header } from '../Header.tsx';
-import { Footer } from '../Footer.tsx';
-import { Body } from '../body/Body.tsx';
+import { Header } from './Header.tsx';
+import { Footer } from './Footer.tsx';
+import { Body } from './body/Body.tsx';
 import css from './App.module.css';
 import clsx from 'clsx';
 

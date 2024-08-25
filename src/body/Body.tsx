@@ -1,11 +1,13 @@
-// import {Rating} from "./components/rating/Rating.tsx";
 import { TodoLists } from './components';
+import { TodolistProvider } from '@/App/provioder';
 
 export const Body = () => {
   return (
     <div>
       {/*<Rating/>*/}
-      <TodoLists />
+      <TodolistProvider>
+        <TodoLists />
+      </TodolistProvider>
     </div>
   );
 };

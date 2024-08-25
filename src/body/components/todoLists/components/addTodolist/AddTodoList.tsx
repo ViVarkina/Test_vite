@@ -1,30 +1,17 @@
-import { Dispatch, SetStateAction, useState } from 'react';
-import { v4 as uuisv4 } from 'uuid';
-import { TaskType, TodoListsType } from '../../TodoLists.tsx';
+import { useContext, useState } from 'react';
+
 import { BaseButton, BaseInput } from '@/shared';
+import { TodolistContext } from '@/App/provioder';
 
-interface PropsType {
-  setTodoLists: Dispatch<SetStateAction<TodoListsType[]>>;
-  setTasks: Dispatch<SetStateAction<TaskType>>;
-}
-
-export const AddTodoList = ({ setTodoLists, setTasks }: PropsType) => {
+export const AddTodoList = () => {
   const [value, setValue] = useState<string>('');
+  const { addTodolist } = useContext(TodolistContext);
+  const onClear = () => {
+    setValue(' ');
+  };
 
-  const onClickAddTodolist = () => {
-    const todoListId = uuisv4();
-    const newTodoList: TodoListsType = {
-      id: todoListId,
-      title: value,
-    };
-    const newTask = {
-      [todoListId]: [],
-    };
-    setTodoLists((prevState) => [newTodoList, ...prevState]);
-    setTasks((prevState) => {
-      return { ...prevState, ...newTask };
-    });
-    setValue('');
+  const onClick = () => {
+    addTodolist(value, onClear);
   };
 
   return (
@@ -37,7 +24,7 @@ export const AddTodoList = ({ setTodoLists, setTasks }: PropsType) => {
           }}
           value={value}
         />
-        <BaseButton onClick={onClickAddTodolist}>+</BaseButton>
+        <BaseButton onClick={onClick}>+</BaseButton>
       </div>
     </>
   );
