@@ -1,10 +1,10 @@
 import css from '../tasksList/TaskList.module.css';
-import { Task } from '../todoList/TodoList.tsx';
-import { ChangeEvent, Dispatch, SetStateAction } from 'react';
-import { TaskType } from '../../TodoLists.tsx';
+import { ChangeEvent, Dispatch, SetStateAction, useContext } from 'react';
 import { ChangeTitle } from '../changeTitile/ChangeTitle.tsx';
 import { BaseCheckbox } from '@/shared';
 import { DeleteTask } from './components';
+import { TodolistContext } from '@/App/provioder';
+import { Task, TaskType } from '@/type';
 
 interface PropsType {
   filterTask: Task[];
@@ -13,6 +13,7 @@ interface PropsType {
 }
 
 export const TasksList = ({ setTasks, filterTask, todolistId }: PropsType) => {
+  const data = useContext(TodolistContext);
   const onDeleteTask = (id: string) => {
     setTasks((prevState) => {
       const targetTodolist = prevState[todolistId];

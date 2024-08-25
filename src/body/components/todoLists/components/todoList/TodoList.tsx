@@ -2,10 +2,10 @@ import { FilterBlock } from '../fiterBlock/FilterBlock.tsx';
 import { TasksList } from '../tasksList/TasksList.tsx';
 import { AddTask } from '../addTask/AddTask.tsx';
 import { Dispatch, SetStateAction, useState } from 'react';
-import { TaskType, TodoListsType } from '../../TodoLists.tsx';
 import { ChangeTitle } from '../changeTitile/ChangeTitle.tsx';
 import css from './TodoList.module.css';
 import { DeleteTodolist } from '../deletTodolist/DeleteTodolist.tsx';
+import { Task, TaskType, TodoListsType } from '@/type/todolistType.ts';
 
 interface PropsType {
   title: string;
@@ -13,13 +13,6 @@ interface PropsType {
   setTasks: Dispatch<SetStateAction<TaskType>>;
   todolistId: string;
   setTodolists: Dispatch<SetStateAction<TodoListsType[]>>;
-}
-
-export interface Task {
-  id: string;
-  task: string;
-  isDone: boolean;
-  todolistId: string;
 }
 
 export type FilterStateType = 'All' | 'Active' | 'Closed';

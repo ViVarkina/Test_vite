@@ -1,9 +1,8 @@
 import css from '../todoList/TodoList.module.css';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { v4 as uuisv4 } from 'uuid';
-import { Task } from '../todoList/TodoList.tsx';
-import { TaskType } from '../../TodoLists.tsx';
 import { BaseButton, BaseInput } from '@/shared';
+import { Task, TaskType } from '@/type';
 
 interface ProrsType {
   setTasks: Dispatch<SetStateAction<TaskType>>;
