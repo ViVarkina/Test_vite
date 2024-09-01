@@ -1,32 +1,26 @@
 import css from '../todoList/TodoList.module.css';
 import { useContext, useState } from 'react';
-import { v4 as uuisv4 } from 'uuid';
 import { BaseButton, BaseInput } from '@/shared';
-import { Task } from '@/type';
 import { TodolistContext } from '@/App/provioder';
 
-interface ProrsType {
+interface PropsType {
   todolistId: string;
 }
 
-export const AddTask = ({ todolistId }: ProrsType) => {
+export const AddTask = ({ todolistId }: PropsType) => {
   const [value, setValue] = useState<string>('');
   const [error, setError] = useState<boolean>();
-  const { setTasksObj: setTasks } = useContext(TodolistContext);
+  const { addTask } = useContext(TodolistContext);
 
-  const addTask = () => {
-    if (value) {
-      setTasks((prevState) => {
-        const newTask: Task = { id: uuisv4(), task: value, isDone: false, todolistId };
-        const tasks = prevState[todolistId];
-        const newTasks = [newTask, ...tasks];
-        return { ...prevState, ...{ [todolistId]: newTasks } };
-      });
-      setValue('');
-    } else {
-      setError(true);
-    }
+  const onClickTask = () => {
+    addTask(
+      value,
+      todolistId,
+      ()=>setValue(''),
+      ()=>setError(true),
+    )
   };
+
   return (
     <div>
       <BaseInput
@@ -40,7 +34,7 @@ export const AddTask = ({ todolistId }: ProrsType) => {
           setValue(e.currentTarget.value);
         }}
       />
-      <BaseButton onClick={addTask}>Add task</BaseButton>
+      <BaseButton onClick={onClickTask}>Add task</BaseButton>
     </div>
   );
 };
