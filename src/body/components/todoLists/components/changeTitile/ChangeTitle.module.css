@@ -1,12 +1,12 @@
 .container {
-  display: flex;
-  gap: 30px;
-  justify-content: space-between;
-  border: 1px solid red;
+    display: flex;
+    gap: 30px;
+    justify-content: space-between;
+    /*border: 1px solid red;*/
 }
 
 .title {
-  width: 120px;
-  overflow-x: hidden;
-  text-overflow: ellipsis;
+    width: 120px;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
 }
