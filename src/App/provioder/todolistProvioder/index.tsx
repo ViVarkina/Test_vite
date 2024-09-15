@@ -1,7 +1,6 @@
 import { createContext, Dispatch, ReactNode, SetStateAction, useState } from 'react';
-import { Task, TaskType, TodoListsType } from '@/type';
-import { initialTasks, initialTodolists } from './data.ts';
-import { v4 as uuisv4 } from 'uuid';
+import { Task, TaskRespons, TaskType, TodoListsType } from '@/type';
+import { ACCESS_TOKEN, BASE_URL } from '@/shared';
 
 interface PropsContext {
   todoLists: TodoListsType[];
@@ -18,8 +17,15 @@ interface PropsContext {
   ) => void;
   onDeleteTask: (taskId: string, todolistId: string) => void;
   isCompletedTask: (checked: boolean, taskId: string, todolistId: string) => void;
-  onDeleteTodolist : (todolistId:string, callback:()=>void)=>void;
-  addTask: (value:string, todolistId:string, successCallback:()=>void, errorCallback:()=>void)=>void;
+  onDeleteTodolist: (todolistId: string, callback: () => void) => void;
+  addTask: (
+    value: string,
+    todolistId: string,
+    successCallback: () => void,
+    errorCallback: () => void
+  ) => void;
+  getMyTodolist: () => void;
+  getMyTasks: () => void;
 }
 
 export const TodolistContext = createContext<PropsContext>({} as PropsContext);
@@ -29,27 +35,8 @@ interface PropsType {
 }
 
 export const TodolistProvider = ({ children }: PropsType) => {
-  const [todoLists, setTodolists] = useState<TodoListsType[]>(initialTodolists);
-  const [tasksObj, setTasksObj] = useState<TaskType>(initialTasks);
-
-  const addTodolist = (titleTdl: string, successCallback: () => void) => {
-    const todoListId = uuisv4();
-
-    const newTodoList: TodoListsType = {
-      id: todoListId,
-      title: titleTdl,
-    };
-
-    const newTask = {
-      [todoListId]: [],
-    };
-    setTodolists((prevState) => [newTodoList, ...prevState]);
-    setTasksObj((prevState) => {
-      return { ...prevState, ...newTask };
-    });
-    successCallback();
-    // setValue('');
-  };
+  const [todoLists, setTodolists] = useState<TodoListsType[]>([]);
+  const [tasksObj, setTasksObj] = useState<TaskType>({});
 
   const onSaveTitleTdl = (todolistId: string, value: string, onSuccesCallback: () => void) => {
     setTodolists((prevState) => {
@@ -73,7 +60,7 @@ export const TodolistProvider = ({ children }: PropsType) => {
     });
     successCallback();
   };
-  const onDeleteTask = (taskId:string,todolistId: string) => {
+  const onDeleteTask = (taskId: string, todolistId: string) => {
     setTasksObj((prevState) => {
       const targetTodolist = prevState[todolistId];
 
@@ -82,7 +69,7 @@ export const TodolistProvider = ({ children }: PropsType) => {
       return { ...prevState, ...{ [todolistId]: filterTask } };
     });
   };
-  const isCompletedTask = (checked:boolean, taskId: string,todolistId:string) => {
+  const isCompletedTask = (checked: boolean, taskId: string, todolistId: string) => {
     setTasksObj((prevState) => {
       const tasks = prevState[todolistId];
       const resultTasks = tasks.map((task) =>
@@ -96,7 +83,7 @@ export const TodolistProvider = ({ children }: PropsType) => {
     });
   };
 
-  const onDeleteTodolist = (todolistId:string, callback:()=>void) => {
+  const onDeleteTodolist = (todolistId: string, callback: () => void) => {
     setTasksObj((prevState) => {
       const newObjTask: TaskType = { ...prevState };
       delete newObjTask[todolistId];
@@ -105,22 +92,108 @@ export const TodolistProvider = ({ children }: PropsType) => {
     setTodolists((prevState) => {
       return prevState.filter((tdl) => tdl.id !== todolistId);
     });
-    callback()
+    callback();
   };
-  const addTask = (value:string, todolistId:string, successCallback:()=>void, errorCallback:()=>void) => {
-    if (value) {
-      setTasksObj((prevState) => {
-        const newTask: Task = { id: uuisv4(), task: value, isDone: false, todolistId };
-        const tasks = prevState[todolistId];
-        const newTasks = [newTask, ...tasks];
-        return { ...prevState, ...{ [todolistId]: newTasks } };
-      });
 
-      successCallback()
-    } else {
-      errorCallback()
+  const getMyTodolist = async () => {
+    const access_token = localStorage.getItem(ACCESS_TOKEN);
+    if (access_token) {
+      const result = await fetch(`${BASE_URL}/todolist`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${access_token}` },
+      });
+      if (result.ok) {
+        const data: TodoListsType[] = await result.json();
+        setTodolists(data);
+      } else {
+        console.error('Autherr');
+      }
     }
-  }
+  };
+  const getMyTasks = async () => {
+    const access_token = localStorage.getItem(ACCESS_TOKEN);
+    if (access_token) {
+      const result = await fetch(`${BASE_URL}/task`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${access_token}` },
+      });
+      if (result.ok) {
+        const data: TaskRespons[] = await result.json();
+        const convertTask = (task: TaskRespons[]): Task[] => {
+          return task.map(
+            (task): Task => ({
+              id: task.id,
+              task: task.title,
+              isDone: task.is_completed,
+              todolistId: task.todolist_id,
+              createdAt: task.created_at,
+              description: task.description,
+              dueDate: task.due_date,
+            })
+          );
+        };
+        const taskObj: TaskType = {};
+
+        convertTask(data).forEach((el) => {
+          if (taskObj[el.todolistId]) {
+            taskObj[el.todolistId] = [...taskObj[el.todolistId], el];
+          } else {
+            taskObj[el.todolistId] = [el];
+          }
+        });
+        console.log(data);
+        console.log(taskObj);
+        setTasksObj(taskObj);
+      } else {
+        console.error('Autherr');
+      }
+    }
+  };
+  const addTask = async (
+    value: string,
+    todolistId: string,
+    successCallback: () => void,
+    errorCallback: () => void
+  ) => {
+    const access_token = localStorage.getItem(ACCESS_TOKEN);
+    if (access_token) {
+      const result = await fetch(`${BASE_URL}/task`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${access_token}` },
+        body: JSON.stringify({
+          description: '',
+          todolist_id: todolistId,
+          title: value,
+        }),
+      });
+      if (result.ok) {
+        successCallback();
+        getMyTasks();
+      } else {
+        console.error('Autherr');
+        errorCallback();
+      }
+    }
+  };
+  const addTodolist = async (titleTdl: string, successCallback: () => void) => {
+    const access_token = localStorage.getItem(ACCESS_TOKEN);
+    if (access_token) {
+      const result = await fetch(`${BASE_URL}/todolist`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${access_token}` },
+        body: JSON.stringify({
+          title: titleTdl,
+          description: '',
+        }),
+      });
+      if (result.ok) {
+        getMyTodolist();
+        successCallback();
+      } else {
+        console.error('Autherr');
+      }
+    }
+  };
 
   const getData = (): PropsContext => {
     return {
@@ -135,6 +208,8 @@ export const TodolistProvider = ({ children }: PropsType) => {
       isCompletedTask,
       onDeleteTodolist,
       addTask,
+      getMyTodolist,
+      getMyTasks,
     };
   };
   return <TodolistContext.Provider value={getData()}>{children}</TodolistContext.Provider>;

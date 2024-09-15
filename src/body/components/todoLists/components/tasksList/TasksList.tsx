@@ -12,11 +12,11 @@ interface PropsType {
 }
 
 export const TasksList = ({ filterTask, todolistId }: PropsType) => {
-  const { onSaveTitleTask, onDeleteTask, isCompletedTask} = useContext(TodolistContext);
+  const { onSaveTitleTask, onDeleteTask, isCompletedTask } = useContext(TodolistContext);
 
   return (
     <ul className={css.tasks}>
-      {filterTask.map((task) => (
+      {filterTask?.map((task) => (
         <li key={task.id} className={task.isDone ? css.isDone : undefined}>
           <div className={css.container}>
             <BaseCheckbox

@@ -1,5 +1,5 @@
 import { createContext, ReactNode, useState } from 'react';
-import { BASE_URL } from '@/shared';
+import { ACCESS_TOKEN, BASE_URL } from '@/shared';
 
 interface AuthContextType {
   isAuthenticated: boolean;
@@ -14,7 +14,6 @@ interface PropsType {
   children: ReactNode;
 }
 
-const ACCESS_TOKEN = 'access_token';
 export const AuthProvider = ({ children }: PropsType) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const singIn = async (login: string, password: string) => {
