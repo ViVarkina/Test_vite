@@ -6,8 +6,12 @@ import clsx from 'clsx';
 import { Login } from '@/feuture/login';
 import { useContext, useEffect } from 'react';
 import { AuthContext, AuthProvider } from '@/App/provioder';
+import { Provider, useSelector } from 'react-redux';
+import { RootState, rootStore } from '@/App/rootStore';
 
 export const App = () => {
+  const {name}=useSelector((state:RootState)=>state.userStore)
+  console.log(name);
   const { isAuthenticated, authMe } = useContext(AuthContext);
 
   useEffect(() => {
@@ -36,7 +40,9 @@ export const App = () => {
 export const WrapperApp = () => {
   return (
     <AuthProvider>
-      <App />
+      <Provider store={rootStore}>
+        <App />
+      </Provider>
     </AuthProvider>
   );
 };
