@@ -4,22 +4,26 @@ import { Body } from './body/Body.tsx';
 import css from './App.module.css';
 import clsx from 'clsx';
 import { Login } from '@/feuture/login';
-import { useContext, useEffect } from 'react';
-import { AuthContext, AuthProvider } from '@/App/provioder';
+import { useEffect } from 'react';
+import { AuthProvider } from '@/App/provioder';
 import { Provider, useSelector } from 'react-redux';
-import { RootState, rootStore } from '@/App/rootStore';
+import { RootState, rootStore, useAppDispatch } from '@/App/rootStore';
+import { autMe } from '@/entits';
 
 export const App = () => {
-  const {name}=useSelector((state:RootState)=>state.userStore)
-  console.log(name);
-  const { isAuthenticated, authMe } = useContext(AuthContext);
+  const { isAuthenticated,isInitialized } = useSelector((state: RootState) => state.userStore);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (!isAuthenticated) {
-      authMe();
+      dispatch(autMe());
+
     }
-  });
-  if (!isAuthenticated) {
+  }, []);
+  if (!isInitialized){
+    return <>Loading...</>
+  }
+  if (!isAuthenticated ) {
     return <Login />;
   }
 
@@ -47,4 +51,3 @@ export const WrapperApp = () => {
   );
 };
 
-// export default App

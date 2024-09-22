@@ -1,12 +1,16 @@
 import { BaseButton } from '@/shared';
-import { useContext } from 'react';
-import { AuthContext } from '@/App/provioder/authProvider';
+import { useAppDispatch } from '@/App/rootStore';
+import { logOut } from '@/entits';
 
 export const Header = () => {
-  const { logAuth } = useContext(AuthContext);
+  const dispatch = useAppDispatch();
+
+  const onClick = () => {
+    dispatch(logOut());
+  };
   return (
     <div className={'header'}>
-      <BaseButton onClick={logAuth}>Выход</BaseButton>
+      <BaseButton onClick={onClick}>Выход</BaseButton>
     </div>
   );
 };
