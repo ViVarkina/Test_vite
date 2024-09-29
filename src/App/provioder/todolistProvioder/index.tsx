@@ -3,7 +3,6 @@ import { Task, TaskRespons, TaskType, TodoListsType } from '@/type';
 import { ACCESS_TOKEN, BASE_URL } from '@/shared';
 
 interface PropsContext {
-  todoLists: TodoListsType[];
   setTodolists: Dispatch<SetStateAction<TodoListsType[]>>;
   tasksObj: TaskType;
   setTasksObj: Dispatch<SetStateAction<TaskType>>;
@@ -24,8 +23,6 @@ interface PropsContext {
     successCallback: () => void,
     errorCallback: () => void
   ) => void;
-  getMyTodolist: () => void;
-  getMyTasks: () => void;
 }
 
 export const TodolistContext = createContext<PropsContext>({} as PropsContext);
@@ -36,6 +33,8 @@ interface PropsType {
 
 export const TodolistProvider = ({ children }: PropsType) => {
   const [todoLists, setTodolists] = useState<TodoListsType[]>([]);
+  console.log(todoLists);
+
   const [tasksObj, setTasksObj] = useState<TaskType>({});
 
   const onSaveTitleTdl = (todolistId: string, value: string, onSuccesCallback: () => void) => {
@@ -133,7 +132,6 @@ export const TodolistProvider = ({ children }: PropsType) => {
           );
         };
         const taskObj: TaskType = {};
-
         convertTask(data).forEach((el) => {
           if (taskObj[el.todolistId]) {
             taskObj[el.todolistId] = [...taskObj[el.todolistId], el];
@@ -197,7 +195,6 @@ export const TodolistProvider = ({ children }: PropsType) => {
 
   const getData = (): PropsContext => {
     return {
-      todoLists,
       setTodolists,
       tasksObj,
       setTasksObj,
@@ -208,8 +205,6 @@ export const TodolistProvider = ({ children }: PropsType) => {
       isCompletedTask,
       onDeleteTodolist,
       addTask,
-      getMyTodolist,
-      getMyTasks,
     };
   };
   return <TodolistContext.Provider value={getData()}>{children}</TodolistContext.Provider>;

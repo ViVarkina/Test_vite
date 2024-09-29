@@ -5,8 +5,10 @@ import { useContext, useState } from 'react';
 import { ChangeTitle } from '../changeTitile/ChangeTitle.tsx';
 import css from './TodoList.module.css';
 import { DeleteTodolist } from '../deletTodolist/DeleteTodolist.tsx';
-import { Task } from '@/type/todolistType.ts';
 import { TodolistContext } from '@/App/provioder';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/App/rootStore';
+import { TaskTDO } from '@/entits';
 
 interface PropsType {
   title: string;
@@ -16,23 +18,29 @@ interface PropsType {
 export type FilterStateType = 'All' | 'Active' | 'Closed';
 export const TodoList = ({ title, todolistId }: PropsType) => {
   const [filterState, setFilterState] = useState<FilterStateType>('All');
-  const {tasksObj, onSaveTitleTdl } = useContext(TodolistContext);
+  const { onSaveTitleTdl } = useContext(TodolistContext);
+  const { taskObj: tasksObj } = useSelector((state: RootState) => state.taskStore);
+
   const tasks = tasksObj[todolistId];
-  let filterTask: Task[] = [];
+  let filterTask: TaskTDO[] = [];
 
   if (filterState === 'All') {
     filterTask = tasks;
   } else if (filterState === 'Active') {
-    filterTask = tasks.filter((task) => !task.isDone);
+    filterTask = tasks.filter((task) => !task.isCompleted);
   } else if (filterState === 'Closed') {
-    filterTask = tasks.filter((task) => task.isDone);
+    filterTask = tasks.filter((task) => task.isCompleted);
   }
-
 
   return (
     <>
       <div className={css.container}>
-        <ChangeTitle title={title} saveTitle={(value, callBack)=>{onSaveTitleTdl(todolistId,value,callBack)}}/>
+        <ChangeTitle
+          title={title}
+          saveTitle={(value, callBack) => {
+            onSaveTitleTdl(todolistId, value, callBack);
+          }}
+        />
         <DeleteTodolist todolistId={todolistId} />
         <AddTask todolistId={todolistId} />
         <TasksList filterTask={filterTask} todolistId={todolistId} />
