@@ -1,14 +1,14 @@
 import { FilterBlock } from '../fiterBlock/FilterBlock.tsx';
 import { TasksList } from '../tasksList/TasksList.tsx';
 import { AddTask } from '../addTask/AddTask.tsx';
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { ChangeTitle } from '../changeTitile/ChangeTitle.tsx';
 import css from './TodoList.module.css';
 import { DeleteTodolist } from '../deletTodolist/DeleteTodolist.tsx';
-import { TodolistContext } from '@/App/provioder';
 import { useSelector } from 'react-redux';
-import { RootState } from '@/App/rootStore';
+import { RootState, useAppDispatch } from '@/App/rootStore';
 import { TaskTDO } from '@/entits';
+import { changeTodolist } from '@/entits/todolist/api/changeTodolist.ts';
 
 interface PropsType {
   title: string;
@@ -18,7 +18,8 @@ interface PropsType {
 export type FilterStateType = 'All' | 'Active' | 'Closed';
 export const TodoList = ({ title, todolistId }: PropsType) => {
   const [filterState, setFilterState] = useState<FilterStateType>('All');
-  const { onSaveTitleTdl } = useContext(TodolistContext);
+  // const { onSaveTitleTdl } = useContext(TodolistContext);
+  const dispatch = useAppDispatch()
   const { taskObj: tasksObj } = useSelector((state: RootState) => state.taskStore);
 
   const tasks = tasksObj[todolistId];
@@ -38,7 +39,7 @@ export const TodoList = ({ title, todolistId }: PropsType) => {
         <ChangeTitle
           title={title}
           saveTitle={(value, callBack) => {
-            onSaveTitleTdl(todolistId, value, callBack);
+            dispatch(changeTodolist({todolistId,title:value,successCallback:callBack}))
           }}
         />
         <DeleteTodolist todolistId={todolistId} />

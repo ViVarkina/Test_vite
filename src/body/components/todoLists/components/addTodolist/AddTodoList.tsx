@@ -1,23 +1,32 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 
 import { BaseButton, BaseInput } from '@/shared';
-import { TodolistContext } from '@/App/provioder';
+import { RootState, useAppDispatch } from '@/App/rootStore';
+import { addTodolist } from '@/entits';
+import { useSelector } from 'react-redux';
 
 export const AddTodoList = () => {
   const [value, setValue] = useState<string>('');
-  const { addTodolist } = useContext(TodolistContext);
+  const dispatch = useAppDispatch()
+  const {isLoading}=useSelector((state:RootState)=>state.todolistStore)
   const onClear = () => {
     setValue(' ');
   };
 
   const onClick = () => {
-    addTodolist(value, onClear);
+    if (!value){
+      return
+    }
+    dispatch(addTodolist({title:value, description:"", successCallback:onClear}));
   };
+  console.log(isLoading);
 
   return (
     <>
       <div>
         <BaseInput
+
+          disabled={isLoading}
           placeholder={'Add new todo'}
           onChange={(event) => {
             setValue(event.target.value);

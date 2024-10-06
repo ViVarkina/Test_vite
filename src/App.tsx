@@ -5,7 +5,6 @@ import css from './App.module.css';
 import clsx from 'clsx';
 import { Login } from '@/feuture/login';
 import { useEffect } from 'react';
-import { AuthProvider } from '@/App/provioder';
 import { Provider, useSelector } from 'react-redux';
 import { RootState, rootStore, useAppDispatch } from '@/App/rootStore';
 import { autMe } from '@/entits';
@@ -43,11 +42,10 @@ export const App = () => {
 };
 export const WrapperApp = () => {
   return (
-    <AuthProvider>
+
       <Provider store={rootStore}>
         <App />
       </Provider>
-    </AuthProvider>
   );
 };
 
