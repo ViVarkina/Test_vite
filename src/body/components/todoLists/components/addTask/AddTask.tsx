@@ -1,7 +1,8 @@
 import css from '../todoList/TodoList.module.css';
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { BaseButton, BaseInput } from '@/shared';
-import { TodolistContext } from '@/App/provioder';
+import { useAppDispatch } from '@/App/rootStore';
+import { addTask } from '@/entits';
 
 interface PropsType {
   todolistId: string;
@@ -10,15 +11,17 @@ interface PropsType {
 export const AddTask = ({ todolistId }: PropsType) => {
   const [value, setValue] = useState<string>('');
   const [error, setError] = useState<boolean>();
-  const { addTask } = useContext(TodolistContext);
+  const dispatch = useAppDispatch();
 
   const onClickTask = () => {
-    addTask(
-      value,
-      todolistId,
-      ()=>setValue(''),
-      ()=>setError(true),
-    )
+    dispatch(
+      addTask({
+        value,
+        todolistId,
+        successCallback: () => setValue(''),
+        errorCallback: () => setError(true),
+      })
+    );
   };
 
   return (

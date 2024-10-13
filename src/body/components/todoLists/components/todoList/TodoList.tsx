@@ -18,7 +18,6 @@ interface PropsType {
 export type FilterStateType = 'All' | 'Active' | 'Closed';
 export const TodoList = ({ title, todolistId }: PropsType) => {
   const [filterState, setFilterState] = useState<FilterStateType>('All');
-  // const { onSaveTitleTdl } = useContext(TodolistContext);
   const dispatch = useAppDispatch()
   const { taskObj: tasksObj } = useSelector((state: RootState) => state.taskStore);
 

@@ -19,13 +19,11 @@ export const AddTodoList = () => {
     }
     dispatch(addTodolist({title:value, description:"", successCallback:onClear}));
   };
-  console.log(isLoading);
 
   return (
     <>
       <div>
         <BaseInput
-
           disabled={isLoading}
           placeholder={'Add new todo'}
           onChange={(event) => {

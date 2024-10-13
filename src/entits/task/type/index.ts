@@ -17,3 +17,7 @@ export interface TaskTDO {
   title: string;
   dueDate: string;
 }
+
+export interface TaskUpdateRequest extends Partial<Pick<TaskTDO, 'isCompleted' | "title">>{}
+
+// type TaskUpdate = Pick<TaskTDO, 'isCompleted' | "title">

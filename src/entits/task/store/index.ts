@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getMyTask, TaskTDO } from '@/entits/task';
+import { addTask, getMyTask, TaskTDO } from '@/entits/task';
+import { updateTask } from '@/entits/task/api/updateTask.ts';
 
 export interface TaskType {
   [key: string]: TaskTDO[];
@@ -32,9 +33,13 @@ export const taskSlice = createSlice({
         const taskObj: TaskType = {};
         action.payload.forEach((el) => {
           if (taskObj[el.todolistId]) {
-            taskObj[el.todolistId] = [...taskObj[el.todolistId], el];
+            taskObj[el.todolistId] = [...taskObj[el.todolistId], el].sort((a, b) => {
+              return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+            })
           } else {
-            taskObj[el.todolistId] = [el];
+            taskObj[el.todolistId] = [el].sort((a, b) => {
+              return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+            });
           }
         });
         state.taskObj = taskObj;
@@ -42,6 +47,30 @@ export const taskSlice = createSlice({
       })
       .addCase(getMyTask.rejected, (state) => {
         state.isLoading = false;
+      })
+      .addCase(addTask.fulfilled, (state, action) => {
+        const taskObj = { ...state.taskObj };
+        if (taskObj[action.payload.todolistId]) {
+          taskObj[action.payload.todolistId] = [
+            action.payload,
+            ...taskObj[action.payload.todolistId],
+          ];
+        } else {
+          taskObj[action.payload.todolistId] = [action.payload];
+        }
+        state.taskObj = taskObj;
+      })
+      .addCase(updateTask.fulfilled, (state, action) => {
+        const taskObj = { ...state.taskObj };
+        if (taskObj[action.payload.todolistId]) {
+          taskObj[action.payload.todolistId] = [
+            action.payload,
+            ...taskObj[action.payload.todolistId].filter(el => (el.id !== action.payload.id))
+          ].sort((a, b) => {
+            return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+          });
+        }
+        state.taskObj = taskObj;
       });
   },
 });
