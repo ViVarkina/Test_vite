@@ -8,34 +8,34 @@ const userSlice = createSlice({
     name: 'Ivan',
     isAuthenticated: false,
     isLoading: false,
-    isInitialized: false
+    isInitialized: false,
   },
   reducers: {
-    logOut(state){
-      localStorage.removeItem(ACCESS_TOKEN)
-      state.isAuthenticated=false
+    logOut(state) {
+      localStorage.removeItem(ACCESS_TOKEN);
+      state.isAuthenticated = false;
     },
   },
   extraReducers: (builder) => {
     builder
-      .addCase(sigIn.pending, (state, ) => {
-        state.isLoading= true
+      .addCase(sigIn.pending, (state) => {
+        state.isLoading = true;
       })
       .addCase(autMe.fulfilled, (state) => {
         state.isAuthenticated = true;
-        state.isLoading = false
-        state.isInitialized = true
+        state.isLoading = false;
+        state.isInitialized = true;
       })
-      .addCase(autMe.rejected, (state, ) => {
-        state.isLoading= false
-        state.isInitialized = true
-
+      .addCase(autMe.rejected, (state) => {
+        state.isLoading = false;
+        state.isInitialized = true;
       })
-      .addCase(sigIn.rejected, (state, ) => {
-        state.isLoading= false
-      })
+      .addCase(sigIn.rejected, (state, action) => {
+        state.isLoading = false;
+        console.log(action);
+      });
   },
 });
 
 export { userSlice };
-export const {logOut}= userSlice.actions
+export const { logOut } = userSlice.actions;

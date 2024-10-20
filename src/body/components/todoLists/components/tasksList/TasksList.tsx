@@ -1,20 +1,16 @@
 import css from '../tasksList/TaskList.module.css';
-import { useContext } from 'react';
 import { ChangeTitle } from '../changeTitile/ChangeTitle.tsx';
 import { BaseCheckbox } from '@/shared';
 import { DeleteTask } from './components';
-import { TodolistContext } from '@/App/provioder';
-import { TaskTDO } from '@/entits';
+import { deleteTask, TaskTDO } from '@/entits';
 import { useAppDispatch } from '@/App/rootStore';
 import { updateTask } from '@/entits/task/api/updateTask.ts';
 
 interface PropsType {
   filterTask: TaskTDO[];
-  todolistId: string;
 }
 
-export const TasksList = ({ filterTask, todolistId }: PropsType) => {
-  const { onDeleteTask } = useContext(TodolistContext);
+export const TasksList = ({ filterTask }: PropsType) => {
   const dispatch = useAppDispatch();
 
   return (
@@ -26,7 +22,7 @@ export const TasksList = ({ filterTask, todolistId }: PropsType) => {
               checked={task.isCompleted}
               onChange={(event) => {
                 // isCompletedTask(event.target.checked, task.id, todolistId);
-                dispatch(updateTask({isCompleted: event.target.checked, taskId: task.id}))
+                dispatch(updateTask({ isCompleted: event.target.checked, taskId: task.id }));
               }}
             />
 
@@ -40,7 +36,7 @@ export const TasksList = ({ filterTask, todolistId }: PropsType) => {
             />
             <DeleteTask
               disabled={task.isCompleted}
-              onClick={() => onDeleteTask(task.id, todolistId)}
+              onClick={() => dispatch(deleteTask({ id: task.id }))}
             />
           </div>
         </li>

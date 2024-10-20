@@ -1,6 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { apiInstance } from '@/shared';
 import { TodolistDTO, TodolistRespons } from '@/entits/todolist';
+import { errorHandler } from '@/shared';
 
 const normalizedTodolist = (todolist: TodolistRespons[]): TodolistDTO[] => {
   return todolist.map((tdl) => {
@@ -11,8 +12,12 @@ const normalizedTodolist = (todolist: TodolistRespons[]): TodolistDTO[] => {
 };
 export const getMyTodolist = createAsyncThunk<TodolistDTO[], void>(
   'todolist/getMyTodolist',
-  async () => {
-    const response = await apiInstance.get<TodolistRespons[]>('/todolist');
-    return normalizedTodolist(response.data);
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await apiInstance.get<TodolistRespons[]>('/todolist');
+      return normalizedTodolist(response.data);
+    } catch (error) {
+      return rejectWithValue(errorHandler(error));
+    }
   }
 );

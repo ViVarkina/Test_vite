@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { addTodolist, getMyTodolist, TodolistDTO } from '@/entits';
 import { changeTodolist } from '@/entits/todolist/api/changeTodolist.ts';
+import { unionBy } from 'lodash';
 
 interface InitialStateType {
   todoLists: TodolistDTO[];
@@ -42,7 +43,8 @@ export const todolistSlice = createSlice({
       .addCase(changeTodolist.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(changeTodolist.fulfilled, (state) => {
+      .addCase(changeTodolist.fulfilled, (state, action) => {
+        state.todoLists = unionBy([action.payload, ...state.todoLists], 'id');
         state.isLoading = false;
       })
       .addCase(changeTodolist.rejected, (state) => {

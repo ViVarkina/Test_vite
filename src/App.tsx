@@ -8,21 +8,22 @@ import { useEffect } from 'react';
 import { Provider, useSelector } from 'react-redux';
 import { RootState, rootStore, useAppDispatch } from '@/App/rootStore';
 import { autMe } from '@/entits';
+import { ToastContainer } from '@/shared';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const App = () => {
-  const { isAuthenticated,isInitialized } = useSelector((state: RootState) => state.userStore);
+  const { isAuthenticated, isInitialized } = useSelector((state: RootState) => state.userStore);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (!isAuthenticated) {
       dispatch(autMe());
-
     }
   }, []);
-  if (!isInitialized){
-    return <>Loading...</>
+  if (!isInitialized) {
+    return <>Loading...</>;
   }
-  if (!isAuthenticated ) {
+  if (!isAuthenticated) {
     return <Login />;
   }
 
@@ -42,10 +43,14 @@ export const App = () => {
 };
 export const WrapperApp = () => {
   return (
-
-      <Provider store={rootStore}>
-        <App />
-      </Provider>
+    <Provider store={rootStore}>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        closeOnClick
+        toastClassName={css.toast}
+      />
+      <App />
+    </Provider>
   );
 };
-
