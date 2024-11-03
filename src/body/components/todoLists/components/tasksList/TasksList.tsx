@@ -25,7 +25,6 @@ export const TasksList = ({ filterTask }: PropsType) => {
                 dispatch(updateTask({ isCompleted: event.target.checked, taskId: task.id }));
               }}
             />
-
             <ChangeTitle
               title={task.title}
               saveTitle={(value: string, successCallback: () => void) => {
