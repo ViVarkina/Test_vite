@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { sigIn, autMe } from '@/entits';
-import { ACCESS_TOKEN } from '@/shared';
+import { ACCESS_TOKEN, setAuthHeader } from '@/shared';
 
 const userSlice = createSlice({
   name: 'user',
@@ -13,6 +13,7 @@ const userSlice = createSlice({
   reducers: {
     logOut(state) {
       localStorage.removeItem(ACCESS_TOKEN);
+      setAuthHeader()
       state.isAuthenticated = false;
     },
   },

@@ -13,6 +13,10 @@ export const setAuthHeader = () => {
   if (accessToken) {
     apiInstance.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
   }
+  else{
+    apiInstance.defaults.headers.common.Authorization = ''
+  }
+  return accessToken
 };
 
 export const errorHandler = (error: unknown) => {

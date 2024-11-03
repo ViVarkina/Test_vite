@@ -3,30 +3,14 @@ import { Footer } from './Footer.tsx';
 import { Body } from './body/Body.tsx';
 import css from './App.module.css';
 import clsx from 'clsx';
-import { Login } from '@/feuture/login';
-import { useEffect } from 'react';
-import { Provider, useSelector } from 'react-redux';
-import { RootState, rootStore, useAppDispatch } from '@/App/rootStore';
-import { autMe } from '@/entits';
-import { ToastContainer } from '@/shared';
+import { Provider } from 'react-redux';
+import { rootStore } from '@/App/rootStore';
 import 'react-toastify/dist/ReactToastify.css';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { AuthenticateRouter } from '@/App/roouting/routeindex.tsx';
+import { LoginPage, PageTodolist } from '@/pages';
 
 export const App = () => {
-  const { isAuthenticated, isInitialized } = useSelector((state: RootState) => state.userStore);
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    if (!isAuthenticated) {
-      dispatch(autMe());
-    }
-  }, []);
-  if (!isInitialized) {
-    return <>Loading...</>;
-  }
-  if (!isAuthenticated) {
-    return <Login />;
-  }
-
   return (
     <div className={clsx(css.container, css.border, { [css.borderRadius]: true })}>
       <div className={css.header}>
@@ -44,13 +28,15 @@ export const App = () => {
 export const WrapperApp = () => {
   return (
     <Provider store={rootStore}>
-      <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        closeOnClick
-        toastClassName={css.toast}
-      />
-      <App />
+      <BrowserRouter>
+        <Routes>
+          <Route path={'/login'} element={<LoginPage/>}/>
+          <Route element={<AuthenticateRouter/>}>
+            <Route path={'/'} element={<>MadiPage</>}/>
+            <Route path={'/todolist'} element={<PageTodolist/>}/>
+          </Route>
+        </Routes>
+      </BrowserRouter>
     </Provider>
   );
 };

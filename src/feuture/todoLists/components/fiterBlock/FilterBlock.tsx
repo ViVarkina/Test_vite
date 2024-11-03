@@ -18,6 +18,7 @@ export const FilterBlock = (props: Props) => {
     <div>
       {listButton.map((btn) => (
         <BaseButton
+          key={btn}
           variant={setColor(filterState, btn) ? 'outline' : 'primary'}
           onClick={() => setFilterState(btn)}
         >
