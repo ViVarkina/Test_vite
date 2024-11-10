@@ -13,9 +13,7 @@ interface CommonFuncti {
   todolistId: string;
 }
 
-export const changeTodolist = createAsyncThunk<
-  TodolistDTO,
-  Partial<TodolistRequest> & CommonFuncti
+export const changeTodolist = createAsyncThunk<TodolistDTO, Partial<TodolistRequest> & CommonFuncti
 >('todolist/changeTodolist', async ({ successCallback, todolistId, ...data }, twinkAPI) => {
   try {
     const response = await apiInstance.patch<TodolistRespons>(`todolist/${todolistId}`, data);

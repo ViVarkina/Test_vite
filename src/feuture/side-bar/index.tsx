@@ -1,5 +1,6 @@
 import { Menu, MenuProps } from 'antd';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { path } from '@/shared';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -7,18 +8,24 @@ type MenuItem = Required<MenuProps>['items'][number];
 
 export const SideBar=()=>{
   const navigation = useNavigate()
+  const {pathname} = useLocation()
   const items: MenuItem[] = [
     {
-      key: 'main',
+      key: path.main(),
       label:"Главная",
-      onClick:()=> navigation('/')
+      onClick:()=> navigation( path.main())
     },{
-      key: 'sub1',
+      key: path.todolist(),
       label:"Тудулисты",
-      onClick:()=> navigation('/todolist')
+      onClick:()=> navigation(path.todolist())
+    },{
+      key: path.forms(),
+      label:"Формы",
+      onClick:()=> navigation(path.forms())
     }
 
   ]
 
-  return <Menu items={items}/>
+  return <Menu items={items} selectedKeys={[pathname]}/>
 }
+
