@@ -1,7 +1,8 @@
 
-export const path = {
+export const paths = {
   main:() =>"/",
   login:() =>"/login",
-  todolist:() => "/todolist",
+  todoLists:() => "/todo-list",
+  todoList:(id:string=':todolistId')=>`/todo-list/${id}`,
   forms:()=>'/forms'
 }

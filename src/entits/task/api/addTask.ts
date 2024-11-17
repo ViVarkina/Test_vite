@@ -11,11 +11,7 @@ export interface AddTaskType {
 
 
 export const addTask = createAsyncThunk<TaskTDO, AddTaskType>('task/addTask', async (params) => {
-  const response = await apiInstance.post<TaskResponse>('/task', {
-    description: '',
-    todolist_id: params.todolistId,
-    title: params.value,
-  });
+  const response = await apiInstance.post<TaskResponse>('/task', { description: '', todolist_id: params.todolistId, title: params.value, });
   params.successCallback();
   const {
     is_completed: isCompleted,

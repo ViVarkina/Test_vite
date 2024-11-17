@@ -1,33 +1,39 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { addTodolist, getMyTodolist, TodolistDTO } from '@/entits';
+import { addTodolist, getMyTodoList, getMyTodoLists, TodolistDTO } from '@/entits';
 import { changeTodolist } from '@/entits/todolist/api/changeTodolist.ts';
 import { unionBy } from 'lodash';
 
 interface InitialStateType {
   todoLists: TodolistDTO[];
+  todoList: TodolistDTO | undefined;
   isLoading: boolean;
 }
 
 const initialState: InitialStateType = {
   todoLists: [],
+  todoList:undefined,
   isLoading: false,
 };
 export const todolistSlice = createSlice({
   name: 'todolist',
   initialState,
-  reducers: {},
+  reducers: {
+    clearTodolist:(state)=>{
+      state.todoList = undefined
+    }
+  },
   extraReducers: (builder) => {
     builder
-      .addCase(getMyTodolist.pending, (state) => {
+      .addCase(getMyTodoLists.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(getMyTodolist.fulfilled, (state, action) => {
+      .addCase(getMyTodoLists.fulfilled, (state, action) => {
         state.todoLists = action.payload.sort((a, b) => {
           return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
         });
         state.isLoading = false;
       })
-      .addCase(getMyTodolist.rejected, (state) => {
+      .addCase(getMyTodoLists.rejected, (state) => {
         state.isLoading = false;
       })
       .addCase(addTodolist.pending, (state) => {
@@ -44,11 +50,21 @@ export const todolistSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(changeTodolist.fulfilled, (state, action) => {
-        state.todoLists = unionBy([action.payload, ...state.todoLists], 'id');
+        if(state.todoList){
+          state.todoList = action.payload
+        }
+        else{
+          state.todoLists = unionBy([action.payload, ...state.todoLists], 'id');
+        }
         state.isLoading = false;
       })
       .addCase(changeTodolist.rejected, (state) => {
         state.isLoading = false;
-      });
+      })
+      .addCase(getMyTodoList.fulfilled, (state, action)=>{
+        state.todoList = action.payload
+      })
   },
 });
+
+export const { clearTodolist} = todolistSlice.actions

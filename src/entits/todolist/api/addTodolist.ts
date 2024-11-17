@@ -13,7 +13,7 @@ interface CommonFuncti {
 }
 
 export const addTodolist = createAsyncThunk<TodolistDTO, TodolistRequest & CommonFuncti>(
-  'todolist/addTodolist',
+  'pageTodolist/addTodolist',
   async ({ successCallback, ...data }, twinkAPI) => {
     try {
       const response = await apiInstance.post<TodolistRespons>('todolist', data);

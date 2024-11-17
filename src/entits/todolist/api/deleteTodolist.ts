@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { DeleteTodolistParams, getMyTodolist } from '@/entits';
+import { DeleteTodolistParams, getMyTodoLists } from '@/entits';
 import { apiInstance } from '@/shared';
 import { errorHandler } from '@/shared';
 
@@ -8,12 +8,12 @@ interface CommonFuncti {
 }
 
 export const deleteTodolist = createAsyncThunk<void, DeleteTodolistParams & CommonFuncti>(
-  'todolist/deleteTodolist',
+  'pageTodolist/deleteTodolist',
   async ({ todolistId, successCallback }, { rejectWithValue, dispatch }) => {
     try {
       await apiInstance.delete(`todolist/${todolistId}`);
       successCallback();
-      dispatch(getMyTodolist());
+      dispatch(getMyTodoLists());
     } catch (error) {
       return rejectWithValue(errorHandler(error));
     }

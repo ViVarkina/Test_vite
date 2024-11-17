@@ -1,1 +1,1 @@
-export {path} from './constant.ts'
+export {paths} from './constant.ts'

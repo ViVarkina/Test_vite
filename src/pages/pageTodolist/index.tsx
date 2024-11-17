@@ -1,5 +1,6 @@
-import { TodoLists } from '@/feuture';
+
+import { TodolistWrapper } from '@/feuture';
 
 export const PageTodolist=()=>{
-  return <TodoLists/>
+  return <TodolistWrapper/>
 }

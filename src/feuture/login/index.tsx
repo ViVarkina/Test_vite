@@ -1,4 +1,4 @@
-import { BaseButton, BaseInput, path } from '@/shared';
+import { BaseButton, BaseInput, paths } from '@/shared';
 import css from './index.module.css';
 import { useEffect, useState } from 'react';
 import { autMe, sigIn } from '@/entits';
@@ -29,7 +29,7 @@ export const Login = () => {
   }
 
   if (isAuthenticated){
-    return <Navigate to={path.main()}/>
+    return <Navigate to={paths.main()}/>
   }
 
   return (

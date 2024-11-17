@@ -9,6 +9,8 @@ import { useSelector } from 'react-redux';
 import { RootState, useAppDispatch } from '@/App/rootStore';
 import { TaskTDO } from '@/entits';
 import { changeTodolist } from '@/entits/todolist/api/changeTodolist.ts';
+import { BaseButton, paths } from '@/shared';
+import { Link } from 'react-router-dom';
 
 interface PropsType {
   title: string;
@@ -41,10 +43,12 @@ export const TodoList = ({ title, todolistId }: PropsType) => {
             dispatch(changeTodolist({ todolistId, title: value, successCallback: callBack }));
           }}
         />
+        <BaseButton><Link to={paths.todoList(todolistId)}>open</Link></BaseButton>
         <DeleteTodolist todolistId={todolistId} />
         <AddTask todolistId={todolistId} />
         <TasksList filterTask={filterTask} />
         <FilterBlock setFilterState={setFilterState} filterState={filterState} />
+
       </div>
     </>
   );

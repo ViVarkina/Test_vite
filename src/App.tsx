@@ -8,8 +8,8 @@ import { rootStore } from '@/App/rootStore';
 import 'react-toastify/dist/ReactToastify.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { AuthenticateRouter } from '@/App/roouting/routeindex.tsx';
-import { FormsPage, LoginPage, PageTodolist } from '@/pages';
-import { path } from '@/shared';
+import { FormsPage, LoginPage, PageTodolist, PageTodoLists } from '@/pages';
+import { paths } from '@/shared';
 
 export const App = () => {
   return (
@@ -31,11 +31,12 @@ export const WrapperApp = () => {
     <Provider store={rootStore}>
       <BrowserRouter>
         <Routes>
-          <Route path={path.login()} element={<LoginPage/>}/>
+          <Route path={paths.login()} element={<LoginPage/>}/>
           <Route element={<AuthenticateRouter/>}>
-            <Route path={path.main()} element={<>MadiPage</>}/>
-            <Route path={path.todolist()} element={<PageTodolist/>}/>
-            <Route path={path.forms()} element={<FormsPage/>}/>
+            <Route path={paths.main()} element={<>MadiPage</>}/>
+            <Route path={paths.todoLists()} element={<PageTodoLists/>}/>
+            <Route path={paths.todoList()} element={<PageTodolist/>}/>
+            <Route path={paths.forms()} element={<FormsPage/>}/>
           </Route>
         </Routes>
       </BrowserRouter>
